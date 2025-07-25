@@ -6,44 +6,21 @@ from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
 from .serializer import SelectCarSerializer
 from rest_framework import status
+from rest_framework import generics
 
 
-class SelectCarListView(APIView):
+class SelectCarListView(generics.ListCreateAPIView):
     
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated)
     
-    def get(self, request = Request ):
+    queryset = SelectCar.objects.all()
+    serializer_class = SelectCarSerializer
         
-        carchoice = SelectCar.objects.all()
-        shop_serializer = SelectCarSerializer(carchoice, many = True)
-        
-        return Response(shop_serializer.data, status.HTTP_200_OK)
+class SelectCarDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     
-    def post(self, request = Request):
-        
-        serializer = SelectCarSerializer(data = request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status.HTTP_201_CREATED)
-        
-        else:
-            return Response(None, status.HTTP_400_BAD_REQUEST)
-        
-class SelectCarDetailApiView(APIView):
-    
-    def get(self, request = Request, request_id = int):
-        
-        car = SelectCar.objects.get(pk = request_id)
-        
-        if car in SelectCar:
+    queryset = SelectCar.objects.all()
+    serializer_class = SelectCarSerializer
             
-            serializer = SelectCarSerializer(car)
-            return Response(serializer.data, status.HTTP_200_OK)
-        
-        else:
-            
-            return Response(None, status.HTTP_404_NOT_FOUND)
          
         
         
