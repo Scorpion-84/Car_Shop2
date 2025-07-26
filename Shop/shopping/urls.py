@@ -19,14 +19,17 @@ from django.urls import path,include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from selecting_car.views import SelectCarListView, SelectCarDetailApiView
 from selecting_car import views
+from selecting_car.views import SignUpView
 #from rest_framework.routers import DefaultRouter
 
 #router = DefaultRouter()
 #router.register()
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/signup/', SignUpView.as_view(), name = 'signup'),
     path('api/token/', TokenObtainPairView.as_view(), name = 'token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name = 'token_refresh'),
     path('api/list/', SelectCarListView.as_view(), name = 'select_car_list'),
     path('api/create/<pk>', views.SelectCarDetailApiView.as_view(), name = 'select_car_detail'),
+    
 ]
